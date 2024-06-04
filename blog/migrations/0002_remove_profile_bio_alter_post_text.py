@@ -2,7 +2,7 @@
 
 
 from django.db import migrations
-
+import ckeditor_uploader.fields
 
 class Migration(migrations.Migration):
 
