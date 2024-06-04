@@ -2,17 +2,17 @@ from django import forms
 from django.forms.widgets import ClearableFileInput
 from .models import Post, Tag, Comment
 
-choices = Tag.objects.all().values_list("name", "name")
+
 class PostForm(forms.ModelForm):
   
   class Meta:
     model = Post
+    tag = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), widget=forms.SelectMultiple(attrs={'class':'form-control'}))
     fields = ("image", 'title', 'tag', 'text', 'likes')
     
     widgets = {
     'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
     'title': forms.TextInput(attrs={'class':'form-control'}),
-    'tag': forms.SelectMultiple(choices=choices, attrs={'class':'form-control'}),
     'text': forms.Textarea(attrs={'class':'form-control'}),
   }
 
