@@ -1,0 +1,46 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<br><br>
+<div class="card border-success mb-3">
+  <div class="card-header bg-transparent border-success fs-2"><img class="rounded-circle" alt="profile-image" src="{{profile.image.url}}" width="100">
+
+    {{profile.name}}
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">Username: @{{profile.user}}</h4>
+    <br>
+    <div class="bio fs-4">
+      Bio:
+      <p class="card-text fs-4">{{profile.bio|linebreaksbr}}</p>
+    </div>
+  </div>
+  <div class="card-footer bg-transparent border-success">
+    <a class="btn btn-sm btn-primary fs-4" href="#">Posts</a>
+    {% if request.user == profile.user %}
+    <a class="btn btn-sm btn-primary fs-4" href="#">Edit Profile</a>
+    {% endif %}
+    <a class="btn btn-sm btn-primary fs-4" href="#">Following</a>
+    <a class="btn btn-sm btn-primary fs-4" href="#">Followers</a>
+    <hr>
+  </div>
+</div>
+<hr>
+<h3>Posts</h3>
+{% for post in posts reversed %}
+<div class="card" style="width: 18rem;"><a href="{% url 'post_detail' pk=post.pk %}">
+  <img src="{{post.image.url}}" class="card-img-top" alt="post-image">
+  <div class="card-body">
+    <h5 class="card-title">{{post.title}}</h5>
+    <p>{{post.published_date}}</p>
+
+    <p class="card-text">{{post.text | truncatewords:20}}</p>
+  </div>
+  <hr>
+  {% for tag in post.tag.all %}
+  <a class="profile-post-tag" href="#">#{{tag.name}}</a>
+  {% endfor %}
+</a></div>
+{% endfor %}
+{% endblock %}
