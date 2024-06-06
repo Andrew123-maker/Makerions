@@ -2,7 +2,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from .models import Post, Profile
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
@@ -92,3 +92,22 @@ def view_profile(request, username):
     'posts':posts,
   }
   return render(request, 'blog/profile.html', context)
+
+def edit_profile(request, username):
+  user = get_object_or_404(User, username=username)
+  profile = Profile.objects.get(user=user)
+  
+  if request.method=="POST":
+    form = ProfileForm(request.POST, request.FILES, instance=profile)
+    if form.is_valid():
+      profile = form.save(commit=False)
+      profile.user = request.user
+      profile.last_update = timezone.now()
+      profile.save()
+      return redirect('profile', username=profile.user)
+  else:
+    form = ProfileForm(instance=profile)
+    context={
+      'form':form
+    }
+    return render(request, 'blog/edit_profile.html', context)

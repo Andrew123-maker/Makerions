@@ -19,7 +19,7 @@
   <div class="card-footer bg-transparent border-success">
     <a class="btn btn-sm btn-primary fs-4" href="#">Posts</a>
     {% if request.user == profile.user %}
-    <a class="btn btn-sm btn-primary fs-4" href="#">Edit Profile</a>
+    <a class="btn btn-sm btn-primary fs-4" href="{% url 'edit_profile' username=profile.user %}">Edit Profile</a>
     {% endif %}
     <a class="btn btn-sm btn-primary fs-4" href="#">Following</a>
     <a class="btn btn-sm btn-primary fs-4" href="#">Followers</a>
