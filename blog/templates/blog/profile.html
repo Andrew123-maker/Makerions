@@ -13,7 +13,7 @@
     <br>
     <div class="bio fs-4">
       Bio:
-      <p class="card-text fs-4">{{profile.bio|linebreaksbr}}</p>
+      <p class="card-text fs-4">{{ profile.bio|safe }}</p>
     </div>
   </div>
   <div class="card-footer bg-transparent border-success">
@@ -35,7 +35,7 @@
     <h5 class="card-title">{{post.title}}</h5>
     <p>{{post.published_date}}</p>
 
-    <p class="card-text">{{post.text | truncatewords:20}}</p>
+    <p class="card-text">{{post.text | truncatewords:20 | safe}}</p>
   </div>
   <hr>
   {% for tag in post.tag.all %}
