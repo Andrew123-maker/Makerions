@@ -81,13 +81,13 @@ function createEditors(element = document.body) {
                 return value;
             }
         );
+        
         config.simpleUpload = {
             'uploadUrl': upload_url,
             'headers': {
                 'X-CSRFToken': getCookie(csrf_cookie_name),
             },
         };
-
         config.fileUploader = {
             'fileTypes': upload_file_types
         };
@@ -177,3 +177,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Starts to observe the selected father element with the configured options
     observer.observe(mainContent, observerOptions);
 });
+
