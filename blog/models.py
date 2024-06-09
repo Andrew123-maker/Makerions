@@ -31,7 +31,7 @@ class Post(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   image = models.ImageField(blank=True, null=True, upload_to=user_directory_path)
   title = models.CharField(max_length=200)
-  text = CKEditor5Field('Text', config_name="extends")
+  text = CKEditor5Field('Text', config_name="extends", blank=True)
   tag = models.ManyToManyField(Tag, related_name="tag")
   likes = models.IntegerField(default = 0)
   published_date = models.DateTimeField(blank=True, null=True)

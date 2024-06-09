@@ -12,7 +12,7 @@ class PostForm(forms.ModelForm):
     widgets = {
       'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
       'title': forms.TextInput(attrs={'class':'form-control'}),
-        'text':CKEditor5Widget(attrs={"class":"django_ckeditor_5"},config_name="extends"),
+        'text':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
       'tag':forms.SelectMultiple(attrs={'class':'form-control'})
     }
 
