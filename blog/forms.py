@@ -1,21 +1,22 @@
+from ckeditor import widgets
 from django import forms
 from django.forms.widgets import ClearableFileInput, Textarea
 from .models import Post, Tag, Comment, Profile
-from ckeditor.widgets import CKEditorWidget
-
+from django_ckeditor_5.widgets import CKEditor5Widget
 class PostForm(forms.ModelForm):
-  
+
   class Meta:
     model = Post
-    tag = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), widget=forms.SelectMultiple(attrs={'class':'form-control'}))
-    
-    fields = ("image", 'title', 'tag', 'text', 'likes')
-    
+    exclude = ('likes', 'user', 'published_date')
+
     widgets = {
-    'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
-    'title': forms.TextInput(attrs={'class':'form-control'}),
-    'text':forms.Textarea(attrs={'class':'form-control', 'id':'editor'})
-  }
+      'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
+      'title': forms.TextInput(attrs={'class':'form-control'}),
+        'text':CKEditor5Widget(attrs={"class":"django_ckeditor_5"},config_name="extends"),
+      'tag':forms.SelectMultiple(attrs={'class':'form-control'})
+    }
+
+
 
 class CommentForm(forms.ModelForm):
 

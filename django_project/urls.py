@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('blog.urls')),
     path('accounts/login/', views.LoginView.as_view(next_page='/'), name='login'),
     path('accounts/logout/', views.LogoutView.as_view(next_page='/'), name='logout'),
-    path('ckeditor/', include('django_ckeditor_5.urls'))
+    path('ckeditor5/', include('django_ckeditor_5.urls'))
 ]
 if settings.DEBUG: 
     urlpatterns += static(settings.MEDIA_URL,

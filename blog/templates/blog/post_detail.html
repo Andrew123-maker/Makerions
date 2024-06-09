@@ -10,7 +10,7 @@
         {% include './icons/pencil-fill.svg' %}
       Edit</a>
     </button>
-    <button type="button" class="btn-secondary"><a class="delete" href="#">
+    <button type="button" class="btn-secondary"><a class="delete" href="{% url 'post_delete' pk=post.pk %}">
       <i class="fa-solid fa-xmark"></i> Delete</a>
     </button>
     {% endif %}

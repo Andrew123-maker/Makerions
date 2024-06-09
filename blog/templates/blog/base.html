@@ -16,7 +16,7 @@
       <header>
         <div class="container">
           <a class="navbrand" href="/">
-        {% load static %}<img src="{% static "images/logo.jpg" %}" height="80" width="250" alt="Website-logo"></a>
+        <img src="{% static "images/logo.jpg" %}" height="80" width="250" alt="Website-logo"></a>
           <nav class="navbar">
             <ul>
               <li><a href="{% url 'post_list' %}">Blog</a></li>
@@ -58,13 +58,15 @@
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
       <script>
-        ClassicEditor
-        .create(document.querySelector('#editor'))
-        .catch( err => {
-                  console.error( err );
-              })
-
+          document.addEventListener("DOMContentLoaded", function() {
+              ClassicEditor
+                  .create(document.querySelector('#editor'))
+                  .catch(err => {
+                      console.error(err);
+                  });
+          });
       </script>
-      </body>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

@@ -31,25 +31,14 @@ def post_new(request):
   if request.method == "POST":
     form = PostForm(request.POST, request.FILES)
     if form.is_valid():
-      image = form.cleaned_data['image']
-      title = form.cleaned_data['title']
-      text = form.cleaned_data['text']
-      tag = form.cleaned_data['tag']
-      likes = form.cleaned_data['likes']
-      post = Post.objects.create(
-        user=request.user,
-        image=image,
-        title=title,
-        text=text,
-        likes=likes,
-        published_date=timezone.now()
-      )
-      post.tag.set(tag)
+      post = form.save(commit=False)
+      post.user = request.user
+      post.published_date = timezone.now()
       post.save()
       return redirect('post_detail', pk=post.pk)
   else:
     form = PostForm()
-  return render(request, 'blog/post_edit.html', {'form':form})
+  return render(request, 'blog/post_edit.html', {'form': form})
 
 @login_required
 def post_edit(request, pk):
@@ -57,11 +46,11 @@ def post_edit(request, pk):
   if request.method == "POST":
     form = PostForm(request.POST, request.FILES, instance=post)
     if form.is_valid():
-        post = form.save(commit=False)
-        post.user = request.user
-        post.published_date = timezone.now()
-        post.save()
-        return redirect('post_detail', pk=post.pk)
+      post = form.save(commit=False)
+      post.user = request.user
+      post.published_date = timezone.now()
+      post.save()
+      return redirect('post_detail', pk=post.pk)
   else:
     form = PostForm(instance=post)
   context = {
@@ -69,6 +58,12 @@ def post_edit(request, pk):
     'post':post,
   }
   return render(request, 'blog/post_edit.html', context)
+
+@login_required
+def post_delete(request, pk):
+  post = get_object_or_404(Post, pk=pk)
+  post.delete()
+  return redirect('post_list')
 
 def add_comment_to_post(request, pk):
   post = get_object_or_404(Post, pk=pk)

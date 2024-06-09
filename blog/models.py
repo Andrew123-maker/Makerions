@@ -31,13 +31,10 @@ class Post(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   image = models.ImageField(blank=True, null=True, upload_to=user_directory_path)
   title = models.CharField(max_length=200)
-  text = CKEditor5Field(config_name='custom')
+  text = CKEditor5Field('Text', config_name="extends")
   tag = models.ManyToManyField(Tag, related_name="tag")
   likes = models.IntegerField(default = 0)
   published_date = models.DateTimeField(blank=True, null=True)
-  def publish(self):
-    self.published_date = timezone.now()
-    self.save()
   
   def __str__(self):
     return self.title
@@ -55,7 +52,7 @@ class Comment(models.Model):
 class Profile(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
   name = models.CharField(max_length=50)
-  bio = CKEditor5Field(config_name='custom', null=True, blank=True)
+  bio = CKEditor5Field(config_name="extends", blank=True, null=True)
   image = models.ImageField(default='default.jpg',upload_to=user_directory_path)
   last_update = models.DateTimeField(auto_now=True)
   
