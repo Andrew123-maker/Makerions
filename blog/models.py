@@ -34,7 +34,7 @@ class Post(models.Model):
   text = CKEditor5Field('Text', config_name="extends", blank=True)
   tag = models.ManyToManyField(Tag, related_name="tag")
   likes = models.IntegerField(default = 0)
-  published_date = models.DateTimeField(blank=True, null=True)
+  published_date = models.DateTimeField(blank=True, null=True, auto_now=True)
   
   def __str__(self):
     return self.title
@@ -54,18 +54,10 @@ class Profile(models.Model):
   name = models.CharField(max_length=50)
   bio = CKEditor5Field(config_name="extends", blank=True, null=True)
   image = models.ImageField(default='default.jpg',upload_to=user_directory_path)
+  follows = models.ManyToManyField('self', related_name="following", symmetrical=False, blank=True)
   last_update = models.DateTimeField(auto_now=True)
   
   def __str__(self):
     return self.user.username
-
-#create profile when new user sign up
-def created_profile(sender, instance, created, **kwargs):
-  if created:
-    user_profile = Profile(user=instance)
-    user_profile.save()
-
-post_save.connect(created_profile, sender=User)
-
 
   

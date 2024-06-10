@@ -8,12 +8,14 @@ class ProfileInline(admin.StackedInline):
   
 class UserAdmin(admin.ModelAdmin):
   model = User
+  
   inlines =[ProfileInline]
 
 admin.site.register(Post)
 admin.site.register(Comment)
 admin.site.register(Tag)
 admin.site.register(Profile)
+
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
