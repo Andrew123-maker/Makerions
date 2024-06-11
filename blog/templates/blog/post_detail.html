@@ -22,12 +22,12 @@
   <img src='{{post.image.url}}' height="350" width="450">
   {% endif %}
   <br>
+  
+  <p>{{post.text|safe}}</p>
+  <br>
   {% for tag in post.tag.all %}
   <a href="#">#{{ tag.name }}</a>
   {% endfor %}
-  
-  <br>
-  <p>{{post.text|safe}}</p>
 </article>
 
 <br>
