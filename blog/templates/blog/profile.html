@@ -10,7 +10,7 @@
   </div>
   <div class="card-body">
     <h4 class="card-title">Username: @{{profile.user}}</h4>
-    <br>
+    <hr>
     <div class="bio fs-4">
       Bio:
       <p class="card-text fs-4">{{ profile.bio|safe }}</p>
@@ -29,10 +29,12 @@
 <hr>
 <h3>Posts</h3>
 {% for post in posts reversed %}
-<div class="card" style="width: 18rem;"><a href="{% url 'post_detail' pk=post.pk %}">
+<a href="{% url 'post_detail' pk=post.pk %}">
+<div class="card" style="width: 18rem;">
   {% if post.image %}
   <img src="{{post.image.url}}" class="card-img-top" alt="post-image">
   {% endif %}
+</a>
   <div class="card-body">
     <h5 class="card-title">{{post.title}}</h5>
     <p>{{post.published_date}}</p>
@@ -43,6 +45,7 @@
   {% for tag in post.tag.all %}
   <a class="profile-post-tag" href="#">#{{tag.name}}</a>
   {% endfor %}
-</a></div>
+</div>
+
 {% endfor %}
 {% endblock %}
