@@ -10,7 +10,7 @@ nav{
   float:right;
 }
 header{
-  background:#55d6aa;
+  background:#5a7ea0;
 }
 .navbar ul{
   list-style:none;
@@ -37,14 +37,11 @@ header{
 .post .user{
   text-decoration:none;
 }
-.post .edit, .delete, #comment-section .add-comment{
+.post, .edit, .delete, #comment-section .add-comment{
   text-decoration:none;
   color:#000;
 }
-.post .btn-secondary{
-  float:right;
-  margin:10px;
-}
+
 .d-flex{
   float:right;
   margin-left:30px;
@@ -54,4 +51,28 @@ header{
   text-decoration:none;
   margin:5px;
   display:flex;
+}
+.edit-post, .delete-post{
+  background-color:#7e98a5;
+  text-decoration:none;
+  color:black;
+  height:50px;
+  border:none;
+  border-radius:5px;
+  float:right;
+  margin:8px;
+  transition:opacity 0.15s;
+}
+.edit-post:hover, .delete-post:hover{
+  opacity:0.8;
+}
+.post-comment-button{
+  background-color:#7e98a5;
+  text-decoration:none;
+  color:black;
+  height:50px;
+  border:none;
+  border-radius:20px;
+  margin:8px;
+  box-shadow:10px 10px 10px rgba(0,0,0,0.15);
 }
