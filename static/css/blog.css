@@ -1,8 +1,9 @@
-.body{
+body{
   width:100%;
+  background-color:#d5d3d3;
 }
 .container{
-  width:80%;
+  width:100%;
   margin:0 auto;
 }
 
@@ -30,22 +31,39 @@ header{
   margin-left:50px;
   padding-top:25px;
 }
-.post .title, .tag, .comment{
+a{
   text-decoration:none;
-  color:#0042ff;
+  color:#11141d;
+}
+
+.post .title{
+  font-size:20px;
+  font-weight:bold;
 }
 .post .user{
   text-decoration:none;
+  color:#2828f0;
 }
-.post, .edit, .delete, #comment-section .add-comment{
-  text-decoration:none;
-  color:#000;
+.post-image{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width:600px;
 }
+#blog-image{
+  display:inline-block;
+  width:500px;
+  object-position:center;
+}
+.blog-container{
+  display:grid;
+  place-items:center;
+  width:70%;
+  max-width:500px;
+  margin:0 auto;
+  background-color:#dedede;
 
-.d-flex{
-  float:right;
-  margin-left:30px;
-  padding:10px;
+  
 }
 .profile-post-tag{
   text-decoration:none;

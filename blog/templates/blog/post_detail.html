@@ -5,12 +5,12 @@
 <article class='post'>
   <aside class="actions">
     {% if user.is_authenticated and request.user == post.user %}
-    <button type="button" class="btn-secondary"><a class="edit" href="{% url 'post_edit' pk=post.pk %}">
+    <button type="button" class="edit-post"><a class = "edit" href="{% url 'post_edit' pk=post.pk %}">
 
         {% include './icons/pencil-fill.svg' %}
       Edit</a>
     </button>
-    <button type="button" class="btn-secondary"><a class="delete" href="{% url 'post_delete' pk=post.pk %}">
+    <button type="button" class="delete-post"><a class="delete" href="{% url 'post_delete' pk=post.pk %}">
       <i class="fa-solid fa-xmark"></i> Delete</a>
     </button>
     {% endif %}
@@ -19,7 +19,7 @@
   <p>By: {{post.user}} | {{post.published_date}}</p>
   <hr>
   {% if post.image %}
-  <img src='{{post.image.url}}' height="350" width="450">
+  <img class="post-image" src='{{post.image.url}}'>
   {% endif %}
   <br>
   
@@ -28,12 +28,13 @@
   {% for tag in post.tag.all %}
   <a href="#">#{{ tag.name }}</a>
   {% endfor %}
+  
 </article>
 
 <br>
 <hr>
 <div id="comment-section">
-  <button class="btn-secondary" type="button"><a class="add-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">
+  <button class="post-comment-button" type="button"><a class="add-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">
     <i class="fa-solid fa-comment"></i>
      Add comment</a></button>
   <br><br>

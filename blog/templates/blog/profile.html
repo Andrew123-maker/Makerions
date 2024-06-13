@@ -39,12 +39,13 @@
     <h5 class="card-title">{{post.title}}</h5>
     <p>{{post.published_date}}</p>
 
-    <p class="card-text">{{post.text | truncatewords:20 | safe}}</p>
+    <p class="card-text">{{post.text | truncatewords:15 | safe}}</p>
   </div>
   <hr>
   {% for tag in post.tag.all %}
   <a class="profile-post-tag" href="#">#{{tag.name}}</a>
   {% endfor %}
+<br>
 </div>
 
 {% endfor %}

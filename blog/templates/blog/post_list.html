@@ -2,25 +2,31 @@
 {% load static %}
 
 {% block content %}
-<form class="d-flex">
-   <input class="form-control me-2" name = "q" type="search" placeholder="Search Blog" aria-label="Search">
-   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
- </form>
-<br>
-<h2>Blog Post</h2>
- <br><br>
-<ul>
+<br><br>
   {% for post in posts reversed %}
   <article class="post">
-    <li>
-      <a class="title" href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a> | <a class="user" href="{% url 'profile' username=post.user.username %}">{{post.user}}</a> | {{post.published_date}}
-    </li>
-    {% for tag in post.tag.all %}
-      <a class="tag" href="#">#{{tag.name}}</a>
-    {% endfor %}
-    <a class="comment" href="{% url 'post_detail' pk=post.pk %}#comment-section"> | Comments: {{post.comments.count}}</a>
+      <div class="blog-container">
+        <div>
+          <p class="title">
+            <a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}
+            </a>
+          </p>
+          <a href="{% url 'post_detail' pk=post.pk %}">
+          <img id="blog-image" src="{{post.image.url}}">
+          </a>
+        </div>
+        <div>
+          
+          <a class="user" href="{% url 'profile' username=post.user.username %}">{{post.user}}</a> | {{post.published_date}}
+          <p>{{post.text | truncatewords:25|safe}}</p>
+        {% for tag in post.tag.all %}
+          <a class="tag" href="#">#{{tag.name}}</a>
+        {% endfor %}
+          <a class="comment" href="{% url 'post_detail' pk=post.pk %}#comment-section"> | Comments: {{post.comments.count}}</a>
+        </div>
+      </div>
     <br><br>
   {% endfor %}
   </article>
-</ul>
+
 {% endblock %}
