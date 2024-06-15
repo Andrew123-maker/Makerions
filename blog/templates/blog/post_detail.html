@@ -31,28 +31,22 @@
   
 </article>
 
-<br>
-<hr>
 <div id="comment-section">
   <button class="post-comment-button" type="button"><a class="add-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">
     <i class="fa-solid fa-comment"></i>
      Add comment</a></button>
   <br><br>
   {% for comment in post.comments.all reversed %}
-  <div>
-    <strong>{{comment.user}} -
-          {{comment.created_date}}
-    </strong>
-    <br>
-    <p>{{comment.text|linebreaksbr}}</p>
-    <br>
-  </div>
-  {% empty %}
-  <p>No comments here yet :(</p>
-  {% endfor %}
+  <strong>{{comment.user}} -
+        {{comment.created_date}}
+  </strong>
+  <br>
+  <p>{{comment.text|linebreaksbr}}</p>
+  <br>
+{% empty %}
+<p>No comments here yet :(</p>
+{% endfor %}
 </div>
 
-<br>
-<br>
 
 {% endblock %}

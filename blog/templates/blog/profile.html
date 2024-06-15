@@ -2,8 +2,8 @@
 {% load static %}
 {% block title %}Profile{% endblock %}
 {% block content %}
-<br><br>
-<div class="card border-success mb-3">
+<div class="profile-page">
+  <hr>
   <div class="card-header bg-transparent border-success fs-2"><img class="rounded-circle" alt="profile-image" src="{{profile.image.url}}" width="100">
 
     {{profile.name}}
@@ -27,26 +27,4 @@
   </div>
 </div>
 <hr>
-<h3>Posts</h3>
-{% for post in posts reversed %}
-<a href="{% url 'post_detail' pk=post.pk %}">
-<div class="card" style="width: 18rem;">
-  {% if post.image %}
-  <img src="{{post.image.url}}" class="card-img-top" alt="post-image">
-  {% endif %}
-</a>
-  <div class="card-body">
-    <h5 class="card-title">{{post.title}}</h5>
-    <p>{{post.published_date}}</p>
-
-    <p class="card-text">{{post.text | truncatewords:15 | safe}}</p>
-  </div>
-  <hr>
-  {% for tag in post.tag.all %}
-  <a class="profile-post-tag" href="#">#{{tag.name}}</a>
-  {% endfor %}
-<br>
-</div>
-
-{% endfor %}
 {% endblock %}
