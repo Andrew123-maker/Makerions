@@ -2,7 +2,16 @@
 {% load static %}
 
 {% block content %}
+<header class="intro">Welcome to this website. This site is used for view or post anything related to mathmatic, science, computer, etc. If this is your first time visit the site, click admin to <a class="admin" href="{%url 'login'%}">login</a>.</header>
 <aside class="sidebar">
+  <div class="search">
+      <form action="#">
+          <input type="text" placeholder="Search blogs" name="q">
+          <button>
+              <i class="fa fa-search" style="font-size: 18px;"></i>
+          </button>
+      </form>
+  </div>
   <div class="posts">
     <h1>Recent Posts</h1>
     {% for post in posts %}
@@ -13,7 +22,7 @@
   </div>
   <div class="likes">
     <h1>Most likes</h1>
-    {% for post in posts %}
+    {% for post in likes_posts %}
     <ul>
       <li><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></li>
     </ul>
@@ -30,23 +39,20 @@
 </aside>
 <main>
   <div class="blog-post">
-    {% for post in posts %}
-    <div class="meta">
+      {% for post in posts reversed %}
+    
       <h1>
         <a href="{% url 'post_detail' pk=post.pk %}">
-          {{post.title}}
+        {{post.title}}
         </a>
       </h1>
-      <small>By <a href="">{{post.user.username}}</a>- {{post.published_date}}</small>
-    </div>
-    <div class="post">
+      <p>By <a href="{% url 'profile' username=request.user %}">{{post.user.username}}</a>- {{post.published_date}}</p>
       <img class="image" src="{{post.image.url}}">
       <p>{{post.text | truncatewords:25|safe}}</p>
       {% for tag in post.tag.all %}
       <a href="#">#{{ tag.name }}</a>
       {% endfor %}
       <a href="{% url 'post_detail' pk=post.pk %}#comment-section"> | Comments:{{post.comments.count}}</a>
-    </div>
     <hr>
     {% endfor %}
   </div>

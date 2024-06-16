@@ -27,6 +27,7 @@
                 <li><a href="#">Tweet</a></li>
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'profile' username=request.user %}">Profile</a></li>
+                
                 {% endif %}
               </ul>
               <a class="mobile" href="#"><i class="fa-solid fa-bars"></i></a>

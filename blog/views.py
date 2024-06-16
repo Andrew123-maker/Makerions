@@ -10,13 +10,18 @@ from django.db.models import Q
 def post_list(request):
   if 'q' in request.GET:
     q = request.GET['q']
-    multiple_q = Q(tag__name__icontains=q) | Q(title__icontains=q)
-    posts = Post.objects.filter(multiple_q).order_by('published_date').distinct()
+    multiple_q = Q(Q(title__icontains=q) | Q(tag__name__icontains=q))
+    posts = Post.objects.filter(multiple_q)
   else:
     posts = Post.objects.order_by('published_date').distinct()
+  
+  likes_posts = Post.objects.order_by('likes').reverse()
+  if len(likes_posts) > 8:
+    likes_posts = likes_posts[:5]
   context = {
-    'posts':posts
-  }
+  'posts':posts,
+  'likes_posts':likes_posts,
+}
   return render(request, 'blog/post_list.html', context)
 
 def post_detail(request, pk):

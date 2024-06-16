@@ -54,6 +54,8 @@ header{
 main{
   background-color:white;
   grid-column-start:span 2;
+  overflow:scroll;
+  border:1px solid grey;
 }
 footer{
   background-color:#acdaf1;
@@ -62,32 +64,38 @@ footer{
 @media (max-width:768px){
   .container{
     grid-template-columns:1fr;
-    grid-template-rows:100px auto auto 100px;
+    grid-template-rows: 100px auto auto;
     width:100%;
   }
   header, .sidebar, main, footer{
     grid-column-start:span 1;
   }
+  main{
+    border:none;
+    overflow:visible;
+  }
 }
 
-.post .image{
+.blog-post .image{
   max-width:100%;
   height:auto;
   margin-top:15px;
 }
-.post .post-image{
-  max-width:500px;
-}
+
 
 /* Navigation */
 header{
-  line-height:100px;
+  line-height:40px;
+}
+.admin{
+  color:blue;
+  text-decoration:underline;
 }
 nav{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  width:70%;
+  width:100%;
   margin:0 auto;
 }
 nav ul li{
@@ -133,15 +141,30 @@ nav ul li a{
 
 /* Aside */
 .sidebar{
-  padding:50px;
+  padding:40px;
 }
-.sidebar .likes, .archives{
-  margin-top:64px;
+.sidebar .posts,.sidebar .likes,.sidebar .archive{
+  margin-top:40px;
   color:white;
 }
-.sidebar li a, .likes li a, .archives li a{
+.sidebar li a{
   color:#c2c1c1;
 }
+.search input[type=text] {
+  width: 200px;
+  height: 25px;
+  padding:5px;
+  border-radius: 10px;
+  border: none;
+}
+.search button {
+    background-color: #363535;
+    color: #f2f2f2;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
 
 /* Blog Post */
 .blog-post{
