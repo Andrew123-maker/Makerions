@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="group">
+  <div class="group-option">
+    {% for group in groups%}
+    <a href="{{group.get_absolute_url}}">
+      <button class="group-buttons">
+          {{group.title}}
+      </button>
+    </a>
+    {% endfor %}
+    <button class="group-buttons">Add Group...</button>
+  <div>
+  <hr>
+  <div class="group-page">
+    <p class="intro">Welcome to join the group to share your experience or build up the community</p>
+    {% for group in groups %}
+    <div class="group-section">
+      {% if group.image %}
+      <img class="group-image" alt="group-profile-image" src="{{group.image.url}}">
+      {% endif %}
+      <a href="{{group.get_absolute_url}}">
+        {{group.title}}
+      </a>
+      <hr>
+      {% if group.post %}
+      {% for post in group.post.all %}
+      <div>
+        <h4>
+          <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+        </h4>
+        {{post.text | safe | truncatechars:255 }}
+        <hr>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+    </div>
+    <br>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

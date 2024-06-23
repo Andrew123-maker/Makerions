@@ -9,7 +9,6 @@
 body{
   font-family:"Poppins", sans-serif;
   background-color:#9d9b9b;
-
 }
 ul{
   list-style:none;
@@ -34,25 +33,26 @@ p{
 }
 
 
-
 .container{
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
-  grid-template-rows:1fr 1fr 1fr;
+  grid-template-rows:100px 1fr 1fr 100px;
   height:100vh;
-  width:70%;
+  width:100%;
   margin:0 auto;
 }
+/* Post-list page */
 header{
   background-color:white;
   grid-column-start:span 3;
+  padding:0px;
 }
 .sidebar{
   background-color:#363535;
   grid-column-start:span 1;
 }
 main{
-  background-color:white;
+  background-color:#dbd7d7;
   grid-column-start:span 2;
   overflow:scroll;
   border:1px solid grey;
@@ -76,10 +76,14 @@ footer{
   }
 }
 
-.blog-post .image{
+.post .image{
   max-width:100%;
   height:auto;
   margin-top:15px;
+}
+.blog .image, .user-blog .image{
+  max-width:100%;
+  max-height:100%;
 }
 
 
@@ -97,6 +101,7 @@ nav{
   justify-content:space-between;
   width:100%;
   margin:0 auto;
+  padding:0px;
 }
 nav ul li{
   display:inline;
@@ -143,7 +148,7 @@ nav ul li a{
 .sidebar{
   padding:40px;
 }
-.sidebar .posts,.sidebar .likes,.sidebar .archive{
+.sidebar .most-comments,.sidebar .most-likes,.sidebar .archive{
   margin-top:40px;
   color:white;
 }
@@ -170,19 +175,46 @@ nav ul li a{
 .blog-post{
   padding:32px;
 }
+.blog{
+  border: 2px solid black;
+  width:500px;
+  background-color:white;
+}
 
 /* Blog Form, comment form */
 .blog-form, .comment-form, .profile-form{
   background-color:white;
   grid-column-start:span 3;
   padding:10px;
-
 }
-.profile-page{
+.profile{
+  display:block;
+  width:100%;
   grid-column-start:span 3;
-  background-color:white;
+  background-color:grey;
   padding:10px;
 }
+.profile-page{
+  width:60%;
+  text-align:center;
+  margin:auto;
+}
+.user-post{
+  display:block;
+  width:60%;
+  margin:auto;
+}
+.user-blog{
+  display:block;
+  border:2px solid black;
+  margin:20px;
+}
+
+.profile-top, .profile-middle, .profile-bottom{
+  margin-top:10px;
+  text-align:center;
+}
+
 .post, #comment-section{
   grid-column-start:span 3;
   background-color:white;
@@ -220,3 +252,43 @@ nav ul li a{
   box-shadow:10px 10px 10px rgba(0,0,0,0.15);
 }
 
+/* Group */
+.group, .group-detail{
+  grid-column-start:span 3;
+  background-color:white;
+}
+.group-buttons{
+  margin-right:10px;
+  text-align:center;
+  width:200px;
+  border-radius:75px;
+  background-color:#d9baba;
+}
+.group-option {
+  padding: 5px;
+  width: 100%;
+}
+
+.group-buttons:hover{
+  background-color:#d9d9d9;
+  opacity:0.8;
+}
+.group-page{
+  display:block;
+}
+.group-page .intro{
+  text-align:center;
+}
+.group-section{
+  border:3px solid black;
+  padding:10px;
+}
+.group-section > .group-image{
+  border-radius:50%;
+  weight:60px;
+  height:80px;
+}
+.group-detail > .group-profile-img{
+  width:100%;
+  height:350px;
+}

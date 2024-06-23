@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="group-detail">
+  <img class="group-profile-img" src="{{group_profile.image.url}}">
+  <br>
+  <h3>{{group_profile.title}}</h3>
+  {% for user_profile in user_profiles %}
+  <a href="{% url 'profile' username=user_profile.user.username %}">
+    <img class="rounded-circle" alt="user-profile-image" src="{{user_profile.image.url}}" width="50">
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

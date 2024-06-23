@@ -12,19 +12,19 @@
           </button>
       </form>
   </div>
-  <div class="posts">
-    <h1>Recent Posts</h1>
-    {% for post in posts %}
+  <div class="most-comments">
+    <h1>Most Comments</h1>
+    {% for post in comments_posts %}
     <ul>
-      <li><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></li>
+      <li><a href="{{post.get_absolute_url}}">{{post.title}}</a></li>
     </ul>
     {% endfor %}
   </div>
-  <div class="likes">
+  <div class="most-likes">
     <h1>Most likes</h1>
     {% for post in likes_posts %}
     <ul>
-      <li><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></li>
+      <li><a href="{{post.get_absolute_url}}">{{post.title}}</a></li>
     </ul>
     {% endfor %}
   </div>
@@ -32,7 +32,7 @@
     <h1>Archives</h1>
     {% for post in posts %}
     <ul>
-      <li><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></li>
+      <li><a href="{{post.get_absolute_url}}">{{post.title}}</a></li>
     </ul>
     {% endfor %}
   </div>
@@ -40,19 +40,20 @@
 <main>
   <div class="blog-post">
       {% for post in posts reversed %}
-    
+    <div class="blog">
       <h1>
-        <a href="{% url 'post_detail' pk=post.pk %}">
+        <a href="{{post.get_absolute_url}}">
         {{post.title}}
         </a>
       </h1>
-      <p>By <a href="{% url 'profile' username=request.user %}">{{post.user.username}}</a>- {{post.published_date}}</p>
+      <p>By <a href="{% url 'profile' username=post.user.username %}">{{post.user.username}}</a>- {{post.published_date}}</p>
       <img class="image" src="{{post.image.url}}">
-      <p>{{post.text | truncatewords:25|safe}}</p>
+      <hr>
       {% for tag in post.tag.all %}
       <a href="#">#{{ tag.name }}</a>
       {% endfor %}
-      <a href="{% url 'post_detail' pk=post.pk %}#comment-section"> | Comments:{{post.comments.count}}</a>
+      <a href="{{post.get_absolute_url}}#comment-section"> | Comments:{{post.comments.count}}</a>
+    </div>
     <hr>
     {% endfor %}
   </div>

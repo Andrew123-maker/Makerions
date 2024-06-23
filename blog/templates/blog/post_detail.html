@@ -5,12 +5,12 @@
 <article class='post'>
   <aside class="actions">
     {% if user.is_authenticated and request.user == post.user %}
-    <button type="button" class="edit-post"><a class = "edit" href="{% url 'post_edit' pk=post.pk %}">
+    <button type="button" class="edit-post"><a class = "edit" href="{% url 'post_edit' slug=post.slug %}">
 
         {% include './icons/pencil-fill.svg' %}
       Edit</a>
     </button>
-    <button type="button" class="delete-post"><a class="delete" href="{% url 'post_delete' pk=post.pk %}">
+    <button type="button" class="delete-post"><a class="delete" href="{% url 'post_delete' slug=post.slug %}">
       <i class="fa-solid fa-xmark"></i> Delete</a>
     </button>
     {% endif %}
@@ -32,7 +32,7 @@
 </article>
 
 <div id="comment-section">
-  <button class="post-comment-button" type="button"><a class="add-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">
+  <button class="post-comment-button" type="button"><a class="add-comment" href="{% url 'add_comment_to_post' slug=post.slug %}">
     <i class="fa-solid fa-comment"></i>
      Add comment</a></button>
   <br><br>

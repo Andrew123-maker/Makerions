@@ -1,7 +1,6 @@
-from django.http.response import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from .models import Post, Profile
+from .models import Post, Profile, Connect
 from .forms import PostForm, CommentForm, ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -18,14 +17,18 @@ def post_list(request):
   likes_posts = Post.objects.order_by('likes').reverse()
   if len(likes_posts) > 8:
     likes_posts = likes_posts[:5]
+
+  comments_posts = Post.objects.order_by('comments')[:5]
+  
   context = {
   'posts':posts,
   'likes_posts':likes_posts,
+  'comments_posts':comments_posts,
 }
   return render(request, 'blog/post_list.html', context)
 
-def post_detail(request, pk):
-  post = get_object_or_404(Post, pk=pk)
+def post_detail(request, slug):
+  post = get_object_or_404(Post, slug=slug)
   context = {
     'post':post
   }
@@ -40,14 +43,14 @@ def post_new(request):
       post.user = request.user
       post.published_date = timezone.now()
       post.save()
-      return redirect('post_detail', pk=post.pk)
+      return redirect('post_detail', slug=post.slug)
   else:
     form = PostForm()
   return render(request, 'blog/post_edit.html', {'form': form})
 
 @login_required
-def post_edit(request, pk):
-  post = get_object_or_404(Post, pk=pk)
+def post_edit(request, slug):
+  post = get_object_or_404(Post, slug=slug)
   if request.method == "POST":
     form = PostForm(request.POST, request.FILES, instance=post)
     if form.is_valid():
@@ -55,7 +58,7 @@ def post_edit(request, pk):
       post.user = request.user
       post.published_date = timezone.now()
       post.save()
-      return redirect('post_detail', pk=post.pk)
+      return redirect('post_detail', slug=post.slug)
   else:
     form = PostForm(instance=post)
   context = {
@@ -65,20 +68,20 @@ def post_edit(request, pk):
   return render(request, 'blog/post_edit.html', context)
 
 @login_required
-def post_delete(request, pk):
-  post = get_object_or_404(Post, pk=pk)
+def post_delete(request, slug):
+  post = get_object_or_404(Post, slug=slug)
   post.delete()
   return redirect('post_list')
 
-def add_comment_to_post(request, pk):
-  post = get_object_or_404(Post, pk=pk)
+def add_comment_to_post(request, slug):
+  post = get_object_or_404(Post, slug=slug)
   if request.method == "POST":
     form = CommentForm(request.POST)
     if form.is_valid():
       comment = form.save(commit=False)
       comment.post = post
       comment.save()
-      return redirect('post_detail', pk=post.pk)
+      return redirect('post_detail', slug=post.slug)
   else:
     form = CommentForm()
     return render(request, 'blog/add_comment_to_post.html', {'form':form})
@@ -111,3 +114,21 @@ def edit_profile(request, username):
       'form':form
     }
     return render(request, 'blog/edit_profile.html', context)
+
+def connect(request):
+  groups = Connect.objects.all()
+  context = {
+    'groups':groups
+  }
+  return render(request, 'blog/connect.html', context)
+
+def group_profile(request, slug):
+  group_profile = get_object_or_404(Connect, slug=slug)
+  followers = group_profile.follows.all()
+  user_profiles = Profile.objects.all().filter(user__in=followers)
+  context = {
+    'group_profile':group_profile,
+    'followers':followers,
+    'user_profiles':user_profiles,
+  }
+  return render(request, 'blog/group_profile.html', context)
