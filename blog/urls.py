@@ -12,4 +12,5 @@ urlpatterns = [
   path('edit/<str:username>/profile', views.edit_profile, name='edit_profile'),
   path('group/', views.connect, name="connect"),
   path('group/<str:slug>/profile', views.group_profile, name="group_profile"),
+  
 ]

@@ -19,12 +19,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from django.contrib.auth import views
+from blog.views import signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
-    path('accounts/login/', views.LoginView.as_view(next_page='/'), name='login'),
-    path('accounts/logout/', views.LogoutView.as_view(next_page='/'), name='logout'),
+    path('accounts/login/', views.LoginView.as_view(template_name="registration/login.html"), name='login'),
+    path('accounts/logout/', views.LogoutView.as_view(template_name="logout,html"), name='logout'),
+    path('signup/', signup, name='signup'),
     path('ckeditor5/', include('django_ckeditor_5.urls'))
 ]
 if settings.DEBUG: 

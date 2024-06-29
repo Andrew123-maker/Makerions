@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.fields import SlugField
+from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from django.utils.text import slugify 
 import uuid
 from django.urls import reverse
@@ -65,6 +66,13 @@ class Profile(models.Model):
   def __str__(self):
     return self.user.username
 
+class Question(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  question = models.CharField(max_length=150)
+  content = CKEditor5Field(config_name="extends", blank=True, null=True)
+
+  def __str__(self):
+    return self.question
 
 class Connect(models.Model):
   user = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
@@ -74,6 +82,7 @@ class Connect(models.Model):
   description = CKEditor5Field('Description', config_name="extends", blank=True, null=True)
   post = models.ManyToManyField(Post, blank=True)
   image = models.ImageField(blank=True, null=True, upload_to=user_directory_path)
+  question = models.ManyToManyField(Question, default=None)
 
   def get_absolute_url(self):
     return reverse('group_profile', args=[self.slug])

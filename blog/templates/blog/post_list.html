@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<header class="intro">Welcome to this website. This site is used for view or post anything related to mathmatic, science, computer, etc. If this is your first time visit the site, click admin to <a class="admin" href="{%url 'login'%}">login</a>.</header>
+<header class="intro">Welcome to this website. This site is used for view or post anything related to mathmatic, science, computer, etc. If this is your first time visit the site, click admin to <a class="admin" href="{%url 'login'%}">login</a> or <a class="admin" href='{% url 'signup' %}'>Sign in</a>.</header>
 <aside class="sidebar">
   <div class="search">
       <form action="#">

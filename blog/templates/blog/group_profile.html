@@ -5,11 +5,46 @@
 <div class="group-detail">
   <img class="group-profile-img" src="{{group_profile.image.url}}">
   <br>
-  <h3>{{group_profile.title}}</h3>
-  {% for user_profile in user_profiles %}
-  <a href="{% url 'profile' username=user_profile.user.username %}">
-    <img class="rounded-circle" alt="user-profile-image" src="{{user_profile.image.url}}" width="50">
-  </a>
-  {% endfor %}
+  <div class="group-intro">
+    <h2>{{group_profile.title}}</h2>
+    {% if group_profile.description %}
+    <p>{{group_profile.description | safe}}</p>
+    {% endif %}
+    {% for user_profile in user_profiles %}
+    <a href="{% url 'profile' username=user_profile.user.username %}">
+      <img class="rounded-circle" alt="user-profile-image" src="{{user_profile.image.url}}" width="50">
+    </a>
+    {% endfor %}
+  </div>
+  <hr>
+  <div class="group-content">
+    <div class="group-question">
+      <h4>Questions</h4>
+      <br>
+      <div>
+        <button>Add question</button>
+      </div>
+      {%if group_profile.question %}
+      {% for question in group_profile.question.all %}
+      <hr>
+      <h5>{{question.question}}</h5>
+      {% endfor %}
+      {% endif %}
+      
+    </div>
+    <hr>
+    {% if group_profile.post %}
+    <div class="group-posts">
+      <h4>Group Posts</h4>
+      {% for post in group_profile.post.all %}
+      <br>
+      <h3>
+        <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+      </h3>
+      {{post.text | safe | truncatechars:255 }}
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

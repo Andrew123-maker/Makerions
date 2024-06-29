@@ -1,8 +1,18 @@
 from ckeditor import widgets
 from django import forms
 from django.forms.widgets import ClearableFileInput, Textarea
-from .models import Post, Tag, Comment, Profile
+from .models import Post, Question, Comment, Profile, Question
 from django_ckeditor_5.widgets import CKEditor5Widget
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
+
+
+class SignupForm(UserCreationForm):
+  
+    class Meta(UserCreationForm.Meta):
+        model = get_user_model()
+        fields = ('username', 'email', 'first_name', 'last_name')
+      
 class PostForm(forms.ModelForm):
 
   class Meta:
@@ -40,4 +50,15 @@ class ProfileForm(forms.ModelForm):
       'bio':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
       'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
     }
-  
+
+
+class QuestionForm(forms.ModelForm):
+
+  class Meta:
+    model = Question
+    fields = ('question', 'content')
+
+    widgets = {
+      'question':forms.TextInput(attrs={'class':'form-control'}),
+      'content':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
+    }
