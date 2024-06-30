@@ -27,7 +27,7 @@
       {%if group_profile.question %}
       {% for question in group_profile.question.all %}
       <hr>
-      <h5>{{question.question}}</h5>
+      <h5>{{question.title}}</h5>
       {% endfor %}
       {% endif %}
       
@@ -36,7 +36,7 @@
     {% if group_profile.post %}
     <div class="group-posts">
       <h4>Group Posts</h4>
-      {% for post in group_profile.post.all %}
+      {% for post in group_posts %}
       <br>
       <h3>
         <a href="{{post.get_absolute_url}}">{{post.title}}</a>

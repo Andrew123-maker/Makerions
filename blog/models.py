@@ -68,11 +68,11 @@ class Profile(models.Model):
 
 class Question(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
-  question = models.CharField(max_length=150)
-  content = CKEditor5Field(config_name="extends", blank=True, null=True)
+  title = models.CharField(max_length=150)
+  content = CKEditor5Field(config_name="extends", blank=True)
 
   def __str__(self):
-    return self.question
+    return self.title
 
 class Connect(models.Model):
   user = models.ForeignKey(User, default=None, on_delete=models.CASCADE)

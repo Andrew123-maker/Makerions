@@ -31,7 +31,7 @@
         <h4>
           <a href="{{post.get_absolute_url}}">{{post.title}}</a>
         </h4>
-        {{post.text | safe | truncatechars:255 }}
+        {{post.text | safe | truncatechars:25 }}
         <hr>
       </div>
       {% endfor %}

@@ -26,8 +26,6 @@ class PostForm(forms.ModelForm):
       'tag':forms.SelectMultiple(attrs={'class':'form-control'})
     }
 
-
-
 class CommentForm(forms.ModelForm):
 
   class Meta:
@@ -51,14 +49,13 @@ class ProfileForm(forms.ModelForm):
       'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
     }
 
-
 class QuestionForm(forms.ModelForm):
 
   class Meta:
     model = Question
-    fields = ('question', 'content')
+    fields = ('title', 'content')
 
     widgets = {
-      'question':forms.TextInput(attrs={'class':'form-control'}),
+      'title':forms.TextInput(attrs={'class':'form-control'}),
       'content':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
     }

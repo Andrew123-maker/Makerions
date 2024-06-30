@@ -138,11 +138,13 @@ def connect(request):
 
 def group_profile(request, slug):
   group_profile = get_object_or_404(Connect, slug=slug)
+  group_posts = group_profile.post.all()
   followers = group_profile.follows.all()
   user_profiles = Profile.objects.all().filter(user__in=followers)
   context = {
     'group_profile':group_profile,
     'followers':followers,
     'user_profiles':user_profiles,
+    'group_posts':group_posts,
   }
   return render(request, 'blog/group_profile.html', context)
