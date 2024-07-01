@@ -33,7 +33,7 @@
       
     </div>
     <hr>
-    {% if group_profile.post %}
+    {% if group_posts %}
     <div class="group-posts">
       <h4>Group Posts</h4>
       {% for post in group_posts %}
@@ -41,9 +41,9 @@
       <h3>
         <a href="{{post.get_absolute_url}}">{{post.title}}</a>
       </h3>
-      {{post.text | safe | truncatechars:255 }}
+      {{post.text | safe |truncatechars:30 }}
+      {% endfor %}
     </div>
-    {% endfor %}
     {% endif %}
   </div>
 </div>
