@@ -9,6 +9,11 @@
       <p>@{{profile.user}}</p>
     </div>
     <div class="profile-middle">
+      {% if profile.user == request.user %}
+      <a href="{% url 'edit_profile' username=request.user.username %}">
+        <button>Edit Profile</button>
+      </a>
+      {% endif %}
       <button>Follow</button>
       <button>Chat</button>
     </div>
@@ -20,8 +25,8 @@
     </div>
     <br><br>
   </div>
+  <h3>Posts:</h3>
   <div class="user-post">
-    <h3>Posts:</h3>
     {% for post in posts reversed %}
     <div class="user-blog">
       <h1>

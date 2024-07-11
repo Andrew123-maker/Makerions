@@ -182,7 +182,7 @@ nav ul li a{
 }
 
 /* Blog Form, comment form */
-.blog-form, .comment-form, .profile-form{
+.blog-form, .comment-form, .profile-form, .question-form{
   background-color:white;
   grid-column-start:span 3;
   padding:10px;
@@ -200,14 +200,21 @@ nav ul li a{
   margin:auto;
 }
 .user-post{
-  display:block;
-  width:60%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  width:80%;
   margin:auto;
 }
 .user-blog{
   display:block;
-  border:2px solid black;
+  background-color:white;
   margin:20px;
+}
+@media (max-width:768px){
+  .user-post{
+    grid-template-columns:1fr;
+    width:100%;
+  }
 }
 
 .profile-top, .profile-middle, .profile-bottom{
@@ -250,4 +257,61 @@ nav ul li a{
 }
 .post-comment-button:hover{
   box-shadow:10px 10px 10px rgba(0,0,0,0.15);
+}
+
+/* Group */
+.group, .group-detail{
+  grid-column-start:span 3;
+  background-color:white;
+}
+.group-buttons{
+  margin-right:10px;
+  text-align:center;
+  width:200px;
+  border-radius:75px;
+  background-color:#d9baba;
+}
+.group-option {
+  padding: 5px;
+  width: 100%;
+}
+
+.group-buttons:hover{
+  background-color:#d9d9d9;
+  opacity:0.8;
+}
+.group-page{
+  display:block;
+}
+.group-page .intro{
+  text-align:center;
+}
+.group-section{
+  border:3px solid black;
+  padding:10px;
+}
+.group-section > .group-image{
+  border-radius:50%;
+  weight:60px;
+  height:80px;
+}
+.group-detail > .group-profile-img{
+  width:100%;
+  height:350px;
+}
+.group-intro{
+  display:inline-block;
+}
+/*login page */
+.login-form, .signup-form{
+  margin:20px auto;
+  max-width:700px;
+  background-color:#fff;
+  box-shadow: 0px 0px 10px 0px rgb(0,0,0,0.2);
+  padding:20px;
+}
+
+.signup-form > h2, .login-form > h2{
+  text-align:center;
+  font-size:36px;
 }

@@ -50,9 +50,9 @@
       <img class="image" src="{{post.image.url}}">
       <hr>
       {% for tag in post.tag.all %}
-      <a href="#">#{{ tag.name }}</a>
+      <a href="#">#{{ tag.title }}</a>
       {% endfor %}
-      <a href="{{post.get_absolute_url}}#comment-section"> | Comments:{{post.comments.count}}</a>
+      <a href="{{post.get_absolute_url}}#comment-section"> | Comments: {{post.comments.count}}</a>
     </div>
     <hr>
     {% endfor %}

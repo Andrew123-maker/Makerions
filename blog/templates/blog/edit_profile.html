@@ -2,7 +2,7 @@
 {% block title %}Edit Profile{% endblock title %}
 {% block content %}
 <div class="profile-form">
-<h2>Profile Edit</h2>
+  <h2>Profile Edit</h2>
   <form enctype="multipart/form-data" method="Post">
     {% csrf_token %}
     {{form.media}}

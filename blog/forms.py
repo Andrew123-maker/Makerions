@@ -1,7 +1,7 @@
 from ckeditor import widgets
 from django import forms
 from django.forms.widgets import ClearableFileInput, Textarea
-from .models import Post, Question, Comment, Profile, Question
+from .models import Post, Question, Comment, Profile, Question, Connect
 from django_ckeditor_5.widgets import CKEditor5Widget
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
@@ -17,12 +17,12 @@ class PostForm(forms.ModelForm):
 
   class Meta:
     model = Post
-    exclude = ('likes', 'user', 'published_date')
+    fields = ('title', 'text', 'image', 'tag')
 
     widgets = {
-      'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
       'title': forms.TextInput(attrs={'class':'form-control'}),
-        'text':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
+      'text':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
+      'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
       'tag':forms.SelectMultiple(attrs={'class':'form-control'})
     }
 
@@ -58,4 +58,16 @@ class QuestionForm(forms.ModelForm):
     widgets = {
       'title':forms.TextInput(attrs={'class':'form-control'}),
       'content':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
+    }
+
+class ConnectForm(forms.ModelForm):
+
+  class Meta:
+    model = Connect
+    fields = ('title', 'description', 'image')
+
+    widgets = {
+      'title':forms.TextInput(attrs={'class':'form-control'}),
+      'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
+      'description':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
     }

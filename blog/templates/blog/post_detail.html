@@ -26,9 +26,13 @@
   <p>{{post.text|safe}}</p>
   <br>
   {% for tag in post.tag.all %}
-  <a href="#">#{{ tag.name }}</a>
+  <a href="#">#{{ tag.title }}</a>
   {% endfor %}
-  
+  <br><br>
+  <form method="POST" action="{% url 'liked_post' slug=post.slug %}">
+    {% csrf_token %}
+    <button type="submit" name="post_id" value="{{ post.id }}">Likes</button> - {{total_likes}} likes
+  </form>
 </article>
 
 <div id="comment-section">

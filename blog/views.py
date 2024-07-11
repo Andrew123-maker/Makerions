@@ -2,11 +2,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
-from .models import Post, Profile, Connect
-from .forms import PostForm, CommentForm, ProfileForm, SignupForm
+from .models import Post, Profile, Connect, Question
+from .forms import PostForm, CommentForm, ProfileForm, SignupForm, ConnectForm, QuestionForm
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
+from django.db.models import Count
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 
 def signup(request):
   form = SignupForm()
@@ -28,11 +32,11 @@ def post_list(request):
   else:
     posts = Post.objects.order_by('published_date').distinct()
   
-  likes_posts = Post.objects.order_by('likes').reverse()
+  likes_posts = Post.objects.order_by('liked').reverse()
   if len(likes_posts) > 8:
     likes_posts = likes_posts[:5]
 
-  comments_posts = Post.objects.order_by('comments')[:5]
+  comments_posts = Post.objects.annotate(comment_count=Count('comments')).order_by('-comment_count')
   
   context = {
   'posts':posts,
@@ -43,13 +47,17 @@ def post_list(request):
 
 def post_detail(request, slug):
   post = get_object_or_404(Post, slug=slug)
+  total_likes = post.total_likes()
   context = {
-    'post':post
+    'post':post,
+    'total_likes':total_likes,
   }
   return render(request, 'blog/post_detail.html', context)
 
 @login_required
-def post_new(request):
+def post_new(request, slug):
+  #group of the posts will be in
+  group = get_object_or_404(Connect, slug=slug)
   if request.method == "POST":
     form = PostForm(request.POST, request.FILES)
     if form.is_valid():
@@ -57,6 +65,8 @@ def post_new(request):
       post.user = request.user
       post.published_date = timezone.now()
       post.save()
+      post.connect.add(group)
+      form.save_m2m()
       return redirect('post_detail', slug=post.slug)
   else:
     form = PostForm()
@@ -72,6 +82,7 @@ def post_edit(request, slug):
       post.user = request.user
       post.published_date = timezone.now()
       post.save()
+      form.save_m2m()
       return redirect('post_detail', slug=post.slug)
   else:
     form = PostForm(instance=post)
@@ -148,3 +159,39 @@ def group_profile(request, slug):
     'group_posts':group_posts,
   }
   return render(request, 'blog/group_profile.html', context)
+
+def add_group(request):
+  if request.method == 'POST':
+    form = ConnectForm(request.FILES, request.POST)
+    if form.is_valid():
+      group = form.save(commit=False)
+      group.user = request.user
+      group.save()
+      return redirect('group_profile', slug=group.slug)
+  else:
+    form = ConnectForm()
+    return render(request, 'blog/add_group.html', {'form':form})
+
+def add_question(request):
+  if request.method == "POST":
+    form = QuestionForm(request.POST)
+    if form.is_valid():
+      question = form.save(commit=False)
+      question.user = request.user
+      question.save()
+      return redirect('question_detail', pk=question.pk)
+  else:
+    form = QuestionForm()
+    return render(request, 'blog/questionform.html', {'form':form})
+
+def question_detail(request, pk):
+  question = get_object_or_404(Question, pk=pk)
+  context = {
+    'question':question,
+  }
+  return render(request, 'blog/question_detail.html', context)
+
+def liked_post(request, slug):
+  post = get_object_or_404(Post, id=request.POST.get('post_id'))
+  post.liked.add(request.user)
+  return HttpResponseRedirect(reverse('post_detail', args=[str(slug)]))

@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="{% static 'css/blog.css' %}">
 </head>
 <body>
-  <div class="login-container">
+  <div class="login-form">
     <h2>Login Form</h2>
     <form class="login" method="post" action="{% url 'login' %}">
       {% csrf_token %}
