@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import Post, Comment, Tag, Profile, Connect, Question
+from .models import Post, Comment, Tag, Profile, Connect, Question, Reply
 
 #mix profile info into user info
 class ProfileInline(admin.StackedInline):
@@ -26,7 +26,6 @@ class ProfileAdmin(admin.ModelAdmin):
   list_display = (
     "user",
     "name",
-    "bio",
     "last_update",
   )
   search_fields = ("user", "name",)
@@ -61,7 +60,8 @@ admin.site.register(Tag)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Connect)
 admin.site.register(Question)
-
+admin.site.register(Reply)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+

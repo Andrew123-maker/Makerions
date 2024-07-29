@@ -81,7 +81,7 @@ footer{
   height:auto;
   margin-top:15px;
 }
-.blog .image, .user-blog .image{
+.blog .image{
   max-width:100%;
   max-height:100%;
 }
@@ -143,16 +143,19 @@ nav ul li a{
 .show{
   display:block;
 }
+.hide{
+  display:none;
+}
 
 /* Aside */
 .sidebar{
-  padding:40px;
+  padding:20px;
 }
-.sidebar .most-comments,.sidebar .most-likes,.sidebar .archive{
+.sidebar .most-comments,.sidebar .most-likes,.sidebar .tags{
   margin-top:40px;
   color:white;
 }
-.sidebar li a{
+.sidebar a{
   color:#c2c1c1;
 }
 .search input[type=text] {
@@ -201,31 +204,59 @@ nav ul li a{
 }
 .user-post{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  width:80%;
+  grid-template-columns:1fr;
+  width:100%;
   margin:auto;
 }
 .user-blog{
-  display:block;
-  background-color:white;
+  display:inline-block;
   margin:20px;
 }
-@media (max-width:768px){
-  .user-post{
-    grid-template-columns:1fr;
-    width:100%;
-  }
+.user-blog > img{
+  flow:right;
+  max-width:100%;
 }
+
 
 .profile-top, .profile-middle, .profile-bottom{
   margin-top:10px;
   text-align:center;
+}
+.tab-container{
+  display:flex;
+  flex-wrap:wrap;
+  margin: 50px auto;
+  padding:25px;
+}
+.tab-container input[type="radio"]{
+  display:none;
+}
+.tab-container label{
+  background-color:#e2e2e2;
+  padding:25px;
+  font-weight:bold;
+  margin:0px 0px 0px 10px;
+}
+.tab-container .content{
+  background-color:#fff;
+  width:100%;
+  order:1;
+  display:none;
+}
+.tab-container input[type="radio"]:checked + label + .content{
+  display:block;
+}
+.tab-container input[type="radio"]:checked + label{
+  background-color:#fff;
 }
 
 .post, #comment-section{
   grid-column-start:span 3;
   background-color:white;
   padding:25px;
+}
+#comment-section > .replyform{
+  
 }
 .footer{
   text-align:center;
@@ -314,4 +345,7 @@ nav ul li a{
 .signup-form > h2, .login-form > h2{
   text-align:center;
   font-size:36px;
+}
+.reply_comment{
+  margin-left:100px;
 }

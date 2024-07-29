@@ -45,7 +45,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-  user = models.CharField(max_length=50)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
   post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, related_name="comments")
   text = models.TextField()
   created_date = models.DateTimeField(default=timezone.now)
@@ -53,9 +53,22 @@ class Comment(models.Model):
   
   def __str__(self):
     return self.text
+    
+class Reply(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+  text = models.CharField(max_length=150)
+  published_date = models.DateTimeField(blank=True, null=True, auto_now=True)
+
+  class Meta:
+    ordering = ['-published_date']
+
+  def __str__(self):
+    return self.text
 
 class Profile(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
+  follow = models.ManyToManyField(User, related_name="follow")
   name = models.CharField(max_length=50)
   bio = CKEditor5Field(config_name="extends", blank=True, null=True)
   image = models.ImageField(default='default.jpg',upload_to=user_directory_path)

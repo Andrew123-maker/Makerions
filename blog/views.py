@@ -1,15 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.conf import settings
 from django.contrib.auth import login
+from django.conf import settings
 from django.contrib.auth.models import User
-from .models import Post, Profile, Connect, Question
-from .forms import PostForm, CommentForm, ProfileForm, SignupForm, ConnectForm, QuestionForm
+from .models import Post, Profile, Connect, Question, Reply, Comment, Tag
+from .forms import PostForm, CommentForm, ProfileForm, SignupForm, ConnectForm, QuestionForm, ReplyForm
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
 from django.db.models import Q
 from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views.generic import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView, DeleteView
+from django.utils.decorators import method_decorator
 
 
 def signup(request):
@@ -22,102 +24,115 @@ def signup(request):
       login(request, user)
       return redirect(settings.LOGIN_REDIRECT_URL)
     
-  return render(request, 'registration/signup.html', context={'form':form})
+  return render(request, 'registration/signup.html', {'form':form})
+    
   
 def post_list(request):
-  if 'q' in request.GET:
-    q = request.GET['q']
-    multiple_q = Q(Q(title__icontains=q) | Q(tag__name__icontains=q))
-    posts = Post.objects.filter(multiple_q)
+  if 'BlogSearch' in request.GET:
+    q = request.GET['BlogSearch']
+    multiple_q = Q(Q(title__icontains=q) | Q(tag__title__icontains=q))
+    try:
+      posts = Post.objects.filter(multiple_q).distinct()
+    except:
+      posts = None
   else:
     posts = Post.objects.order_by('published_date').distinct()
   
   likes_posts = Post.objects.order_by('liked').reverse()
-  if len(likes_posts) > 8:
+  if len(likes_posts) > 5:
     likes_posts = likes_posts[:5]
 
   comments_posts = Post.objects.annotate(comment_count=Count('comments')).order_by('-comment_count')
+  if len(comments_posts) > 5:
+    comment_posts = comments_posts[:5]
+
+  tags = Tag.objects.all()
   
   context = {
   'posts':posts,
   'likes_posts':likes_posts,
   'comments_posts':comments_posts,
+  'tags':tags,
 }
   return render(request, 'blog/post_list.html', context)
 
-def post_detail(request, slug):
-  post = get_object_or_404(Post, slug=slug)
-  total_likes = post.total_likes()
-  context = {
-    'post':post,
-    'total_likes':total_likes,
-  }
-  return render(request, 'blog/post_detail.html', context)
+class PostDetailView(DetailView):
+  model = Post
+  template_name = "blog/post_detail.html"
+  context_object_name = "post"
+  slug_field = 'slug'
 
-@login_required
-def post_new(request, slug):
-  #group of the posts will be in
-  group = get_object_or_404(Connect, slug=slug)
-  if request.method == "POST":
-    form = PostForm(request.POST, request.FILES)
-    if form.is_valid():
-      post = form.save(commit=False)
-      post.user = request.user
-      post.published_date = timezone.now()
-      post.save()
-      post.connect.add(group)
-      form.save_m2m()
-      return redirect('post_detail', slug=post.slug)
-  else:
-    form = PostForm()
-  return render(request, 'blog/post_edit.html', {'form': form})
+  slug_url_kwarg = 'slug'
 
-@login_required
-def post_edit(request, slug):
-  post = get_object_or_404(Post, slug=slug)
-  if request.method == "POST":
-    form = PostForm(request.POST, request.FILES, instance=post)
-    if form.is_valid():
-      post = form.save(commit=False)
-      post.user = request.user
-      post.published_date = timezone.now()
-      post.save()
-      form.save_m2m()
-      return redirect('post_detail', slug=post.slug)
-  else:
-    form = PostForm(instance=post)
-  context = {
-    'form':form,
-    'post':post,
-  }
-  return render(request, 'blog/post_edit.html', context)
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['total_likes'] = context['post'].total_likes()
+    context['comments'] = Comment.objects.filter(post=context['post']).prefetch_related('reply_set')
+    context['reply_form'] = ReplyForm()
+    return context
 
-@login_required
-def post_delete(request, slug):
-  post = get_object_or_404(Post, slug=slug)
-  post.delete()
-  return redirect('post_list')
+    
+@method_decorator(login_required, name="dispatch")
+class PostCreateView(CreateView):
+  model = Post
+  form_class = PostForm
+  template_name = "blog/post_edit.html"
 
-def add_comment_to_post(request, slug):
-  post = get_object_or_404(Post, slug=slug)
-  if request.method == "POST":
-    form = CommentForm(request.POST)
-    if form.is_valid():
-      comment = form.save(commit=False)
-      comment.post = post
-      comment.save()
-      return redirect('post_detail', slug=post.slug)
-  else:
-    form = CommentForm()
-    return render(request, 'blog/add_comment_to_post.html', {'form':form})
+  def form_valid(self, form):
+    group_slug = self.kwargs.get('slug')
+    group = get_object_or_404(Connect, slug=group_slug)
+    form.instance.user = self.request.user
+    self.object = form.save()
+    form.instance.connect.add(group)
+    return super().form_valid(form)
+
+  def get_success_url(self):
+    slug = self.object.slug
+    return reverse('post_detail', args=[slug])
+
+
+@method_decorator(login_required, name="dispatch")
+class PostEditView(UpdateView):
+  model = Post
+  form_class = PostForm
+  template_name = "blog/post_edit.html"
+
+  def get_success_url(self):
+    slug = self.object.slug
+    return reverse('post_detail', args=[str(slug)])
+
+class PostDeleteView(DeleteView):
+  model = Post
+  success_url = "/"
+  
+  template = "blog/post_confirm_delete.html"
+
+@method_decorator(login_required, name="dispatch")
+class CommentCreateView(CreateView):
+  model = Comment
+  form_class = CommentForm
+  template_name = "blog/add_comment_to_post.html"
+    
+  def form_valid(self, form):
+    self.post_slug = self.kwargs.get('slug')
+    self.post = get_object_or_404(Post, slug=self.post_slug)
+    form.instance.user = self.request.user
+    form.instance.post = self.post
+    self.object = form.save()
+    return super().form_valid(form)
+
+  def get_success_url(self):
+    return reverse('post_detail', args=[str(self.post_slug)])
 
 def view_profile(request, username):
   user = get_object_or_404(User, username=username)
   profile = Profile.objects.get(user=user)
   posts = Post.objects.filter(user=user)
+  groups = Connect.objects.filter(follows=user)
   context = {
     'profile':profile,
     'posts':posts,
+    'groups':groups,
   }
   return render(request, 'blog/profile.html', context)
 
@@ -195,3 +210,25 @@ def liked_post(request, slug):
   post = get_object_or_404(Post, id=request.POST.get('post_id'))
   post.liked.add(request.user)
   return HttpResponseRedirect(reverse('post_detail', args=[str(slug)]))
+
+@login_required
+def follow_user(request, username):
+  if request.method == "POST":
+    profile = get_object_or_404(Profile, id=request.POST.get('profile_id'))
+    profile.follow.add(request.user)
+    return redirect('profile', username=profile.user.username)
+
+
+@login_required
+def reply_comment(request,slug):
+  if request.method == "POST":
+    post = get_object_or_404(Post, slug=slug)
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    reply_form = ReplyForm(request.POST)
+    if reply_form.is_valid():
+      reply = reply_form.save(commit=False)
+      reply.user = request.user
+      reply.comment = comment
+      reply.save()
+      
+      return HttpResponseRedirect(reverse('post_detail', args=[str(slug)]))

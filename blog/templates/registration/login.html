@@ -7,6 +7,10 @@
 </head>
 <body>
   <div class="login-form">
+    <a class="navbrand" href="/">
+      <img src="{% static "images/logo.jpg" %}" height="80" width="250" alt="Website-logo">
+    </a>
+    <hr>
     <h2>Login Form</h2>
     <form class="login" method="post" action="{% url 'login' %}">
       {% csrf_token %}

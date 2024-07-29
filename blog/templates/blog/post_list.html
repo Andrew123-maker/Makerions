@@ -6,7 +6,7 @@
 <aside class="sidebar">
   <div class="search">
       <form action="#">
-          <input type="text" placeholder="Search blogs" name="q">
+          <input type="text" placeholder="Search blogs" name="BlogSearch">
           <button>
               <i class="fa fa-search" style="font-size: 18px;"></i>
           </button>
@@ -28,12 +28,10 @@
     </ul>
     {% endfor %}
   </div>
-  <div class="archive">
-    <h1>Archives</h1>
-    {% for post in posts %}
-    <ul>
-      <li><a href="{{post.get_absolute_url}}">{{post.title}}</a></li>
-    </ul>
+  <div class="tags">
+    <h1>Tags</h1>
+    {% for tag in tags %}
+    <a href="#">#{{tag.title}}</a>
     {% endfor %}
   </div>
 </aside>

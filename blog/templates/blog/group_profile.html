@@ -35,12 +35,12 @@
       
     </div>
     <hr>
+    <h4>Group Posts</h4>
+    <a href="{% url 'post_new' slug=group_profile.slug %}">
+      <button>Add Post</button>
+    </a>
     {% if group_posts %}
     <div class="group-posts">
-      <h4>Group Posts</h4>
-      <a href="{% url 'post_new' slug=group_profile.slug %}">
-        <button>Add Post</button>
-      </a>
       {% for post in group_posts %}
       <br>
       <h3>

@@ -1,7 +1,7 @@
 from ckeditor import widgets
 from django import forms
 from django.forms.widgets import ClearableFileInput, Textarea
-from .models import Post, Question, Comment, Profile, Question, Connect
+from .models import Post, Question, Comment, Profile, Question, Connect, Reply
 from django_ckeditor_5.widgets import CKEditor5Widget
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
@@ -30,10 +30,9 @@ class CommentForm(forms.ModelForm):
 
   class Meta:
     model = Comment
-    fields = ('user','text')
+    fields = ('text',)
     
     widgets = {
-      'user':forms.TextInput(attrs={'class':'form-control'}),
       'text':forms.Textarea(attrs={'class':'form-control'}),
     }
 
@@ -71,3 +70,10 @@ class ConnectForm(forms.ModelForm):
       'image':forms.ClearableFileInput(attrs={'class':'form-control'}),
       'description':forms.Textarea(attrs={'class':'form-control', 'id':'editor'}),
     }
+
+
+class ReplyForm(forms.ModelForm):
+    class Meta:
+        model = Reply
+        fields = ['text']
+        widgets = {'text': forms.Textarea(attrs={'class': 'reply-form', 'rows': 2})}

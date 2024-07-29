@@ -6,7 +6,7 @@
   <div class="profile-page">
     <div class="profile-top">
       <img class="rounded-circle" alt="profile-image" src="{{profile.image.url}}" width="100">
-      <p>@{{profile.user}}</p>
+      <p class="user-id">@{{profile.user}}</p>
     </div>
     <div class="profile-middle">
       {% if profile.user == request.user %}
@@ -14,8 +14,13 @@
         <button>Edit Profile</button>
       </a>
       {% endif %}
-      <button>Follow</button>
-      <button>Chat</button>
+      {% if profile.user != request.user %}
+      <form method="POST" action="{% url 'profile' %}">
+        {% csrf_token %}
+        <input type="hidden" name="profile_id" value="{{ profile.id }}">
+        <button type="submit">Follow</button>
+      </form>
+      {% endif %}
     </div>
     <div class="profile-bottom">
       {% if profile.name %}
@@ -25,24 +30,48 @@
     </div>
     <br><br>
   </div>
-  <h3>Posts:</h3>
-  <div class="user-post">
-    {% for post in posts reversed %}
-    <div class="user-blog">
-      <h1>
-        <a href="{{post.get_absolute_url}}">
-        {{post.title}}
-        </a>
-      </h1>
-      <img class="image" src="{{post.image.url}}">
-      <hr>
-      {% for tag in post.tag.all %}
-      <a href="#">#{{ tag.name }}</a>
+  
+  <div class="tab-container">
+    <input id="tab-posts" type="radio" name="user-post" checked="checked">
+    <label for="tab-posts">Posts</label>
+    <div class="content">
+      <h2>Posts</h2>
+      <div class="user-post">
+        {% for post in posts reversed %}
+        <div class="user-blog">
+          <h1>
+            <a href="{{post.get_absolute_url}}">
+            {{post.title}}
+            </a>
+          </h1>
+          <img class="image" src="{{post.image.url}}">
+          <hr>
+          {% for tag in post.tag.all %}
+          <a href="#">#{{ tag.title }}</a>
+          {% endfor %}
+          <a href="{{post.get_absolute_url}}#comment-section"> | Comments: {{post.comments.count}}</a>
+          <span> | likes: {{post.total_likes}}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <input id="tab-group" type="radio" name="user-post">
+    <label for="tab-group">Group</label>
+    <div class="content">
+      <h2>Group</h2>
+      {% for group in groups %}
+      <h5>
+        <a href="{{group.get_absolute_url}}">{{group.title}}</a>
+      </h5>
+      <br>
       {% endfor %}
-      <a href="{{post.get_absolute_url}}#comment-section"> | Comments:{{post.comments.count}}</a>
       
     </div>
-    {% endfor %}
+    <input id="tab-contact-info" type="radio" name="user-post">
+    <label for="tab-contact-info">Contact Info</label>
+    <div class="content">
+      <h2>Contact info</h2>
+    </div>
   </div>
 </div>
 {% endblock %}
